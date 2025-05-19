@@ -16,14 +16,14 @@ default:
 
 # Check
 check:
-    cargo check && cargo clippy --all -- -W clippy::all
+    cargo check && cargo +nightly clippy --all -- -W clippy::all
 
 format:
     cargo fmt --all
 
 # Test
 test: check format
-    cargo test --all
+    cargo test --all && cargo sqlx prepare
 
 # Build
 build: test
