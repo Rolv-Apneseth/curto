@@ -13,10 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: taiki-e/install-action@cargo-audit
+      - uses: taiki-e/install-action@cargo-deny
+
       - name: Audit
-        run: |
-          cargo install --locked cargo-audit && cargo audit
+        run: cargo audit
 
       - name: Deny
-        run: |
-          cargo install --locked cargo-deny && cargo deny check
+        run: cargo deny check
