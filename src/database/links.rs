@@ -81,10 +81,10 @@ pub async fn create_link(
     link_target: String,
 ) -> Result<Link> {
     // User provided invalid link ID
-    if let Some(id) = link_id.as_ref() {
-        if !Link::validate_id(id) {
-            return Err(Error::LinkIdNotValid(id.clone()));
-        }
+    if let Some(id) = link_id.as_ref()
+        && !Link::validate_id(id)
+    {
+        return Err(Error::LinkIdNotValid(id.clone()));
     };
 
     tokio::time::timeout(
@@ -105,11 +105,12 @@ pub async fn create_link(
     .inspect_err(|_| counter!("db.connection_timeout").increment(1))?
     .map_err(|e| {
         // Provided custom ID already exists in the database
-        if let sqlx::Error::Database(db_err) = &e {
-            if db_err.kind() == sqlx::error::ErrorKind::UniqueViolation && link_id.is_some() {
-                counter!("db.user_provided_taken_id").increment(1);
-                return Error::LinkIdNotUnique(link_id.unwrap());
-            }
+        if let sqlx::Error::Database(db_err) = &e
+            && let Some(link_id) = link_id
+            && db_err.kind() == sqlx::error::ErrorKind::UniqueViolation
+        {
+            counter!("db.user_provided_taken_id").increment(1);
+            return Error::LinkIdNotUnique(link_id);
         }
 
         counter!("db.saving_link_impossible").increment(1);
