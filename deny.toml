@@ -6,9 +6,10 @@ no-default-features = false
 feature-depth = 1
 
 [advisories]
-ignore = [
-  #{ id = "RUSTSEC-0000-0000", reason = "you can specify a reason the advisory is ignored" },
-]
+# Ignore unmaintained crates for now - `paste` used by `utoipa_axum` is unmaintained and I
+# can't seem to get the ignored field to work without the crate being yanked.
+# For the `utoipa` issue, see <https://github.com/juhaku/utoipa/issues/1336>
+unmaintained = "none"
 
 [licenses]
 allow = [
@@ -19,8 +20,9 @@ allow = [
   "ISC",
   "BSD-3-Clause",
   "BSD-2-Clause",
-  "Unicode-DFS-2016",
   "AGPL-3.0",
+  "CDLA-Permissive-2.0",
+  "Zlib",
 ]
 confidence-threshold = 0.8
 
