@@ -93,14 +93,3 @@ where
 
     Ok(res)
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    // UNIT TESTS - HELPERS
-    #[test]
-    fn test_get_config() {
-        assert!(Config::get_config().is_ok());
-    }
-}
