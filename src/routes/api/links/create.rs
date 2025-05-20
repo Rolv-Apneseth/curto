@@ -19,7 +19,7 @@ pub struct CreateLinkRequest {
 
 #[utoipa::path(
     post,
-    path = Route::LinkCreate.as_str(),
+    path = Route::Links.as_str(),
     tags = [ "links" ],
     description = "Create new shortened links",
     request_body = CreateLinkRequest,

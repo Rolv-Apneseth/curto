@@ -16,7 +16,7 @@ async fn request_create_link(
     custom_id: Option<String>,
 ) -> axum_test::TestResponse {
     server
-        .post(Route::LinkCreate.as_str())
+        .post(Route::Links.as_str())
         .json(&CreateLinkRequest {
             target_url: target_url.to_string(),
             custom_id,
@@ -124,7 +124,7 @@ async fn test_list_links() {
         assert_create_link(&server, u, None).await;
     }
 
-    let response = server.get(Route::LinkList.as_str()).await;
+    let response = server.get(Route::Links.as_str()).await;
     response.assert_status(StatusCode::OK);
     assert_eq!(response.header("content-type"), "application/json");
 
@@ -140,7 +140,7 @@ async fn test_list_links() {
 
     // Create a new link and ensure num of returned links increased
     assert_create_link(&server, "https://www.rust-lang.org/", None).await;
-    let response = server.get(Route::LinkList.as_str()).await;
+    let response = server.get(Route::Links.as_str()).await;
     response.assert_status(StatusCode::OK);
     let links = response.json::<Vec<Link>>();
     assert_eq!(links.len(), target_urls.len() + 1);

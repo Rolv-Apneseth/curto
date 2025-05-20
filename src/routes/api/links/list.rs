@@ -6,7 +6,7 @@ use crate::{AppState, database::{Link, get_links}, error::{Error, ErrorResponse,
     get,
     tags = [ "links" ],
     description = "Get all existing shortened links",
-    path = Route::LinkList.as_str(),
+    path = Route::Links.as_str(),
     responses(
         (status = 200, description = "Successfully fetched all shortened links", content(
             ("application/json", examples(
