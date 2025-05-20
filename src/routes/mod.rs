@@ -6,9 +6,8 @@ pub enum Route {
     Health,
     Metrics,
     Docs,
-    LinkCreate,
     LinkRedirect,
-    LinkList,
+    Links,
     LinkGet,
 }
 
@@ -18,9 +17,8 @@ impl Route {
             Self::Health => "/health",
             Self::Metrics => "/metrics",
             Self::Docs => "/docs",
-            Self::LinkCreate => "/create",
             Self::LinkRedirect => "/{link_id}",
-            Self::LinkList => "/links",
+            Self::Links => "/links",
             Self::LinkGet => "/links/{link_id}",
         }
     }

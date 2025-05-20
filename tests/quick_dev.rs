@@ -36,7 +36,7 @@ async fn quick_dev() -> Result<(), Box<dyn Error>> {
     // .await?;
 
     // List existing links
-    hc.do_get(Route::LinkList.into()).await?.print().await?;
+    hc.do_get(Route::Links.into()).await?.print().await?;
 
     Ok(())
 }
