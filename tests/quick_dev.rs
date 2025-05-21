@@ -1,3 +1,5 @@
+#![allow(unused_imports)]
+
 use std::error::Error;
 
 use curto::{config::{AppConfig, Config}, extractors::Json, routes::{Route, api::docs::ROUTE_API_FILE}};
