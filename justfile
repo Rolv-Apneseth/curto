@@ -16,18 +16,18 @@ default:
 
 # Check
 check:
-    cargo check && cargo +nightly clippy --all -- -W clippy::all
+    cargo +nightly check && cargo +nightly clippy --all -- -W clippy::all
 
 format:
-    cargo fmt --all
+    cargo +nightly fmt --all
 
 # Test
 test: check format
-    cargo test --all && cargo sqlx prepare
+    cargo +nightly test --all && cargo +nightly sqlx prepare
 
 # Build
 build: test
-    cargo build --release
+    cargo +nightly build --release
 
 # Recompile then restart the server whenever any change is made
 develop:
