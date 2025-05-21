@@ -1,6 +1,7 @@
 use std::fmt::Display;
 
 use axum::{extract::rejection::{JsonRejection, PathRejection, QueryRejection}, http::StatusCode, response::{IntoResponse, Response}};
+use chrono::NaiveDateTime;
 use serde::Serialize;
 use tokio::time::error::Elapsed;
 use url::ParseError;
@@ -22,6 +23,8 @@ pub enum Error {
     LinkIdNotUnique(String),
     #[error("The provided custom link ID is not valid: {0}")]
     LinkIdNotValid(String),
+    #[error("The provided expiration time is not valid: {0}")]
+    LinkExpirationTimeNotValid(NaiveDateTime),
     #[error("Malformed URL: {0}")]
     MalformedURL(String),
     #[error("Only URLs with valid hosts are accepted: {0}")]
@@ -64,6 +67,7 @@ impl IntoResponse for Error {
             Self::URLWithoutHost(_) => StatusCode::UNPROCESSABLE_ENTITY,
             Self::URLWithMatchingHosts(_) => StatusCode::UNPROCESSABLE_ENTITY,
             Self::LinkIdNotValid(_) => StatusCode::UNPROCESSABLE_ENTITY,
+            Self::LinkExpirationTimeNotValid(_) => StatusCode::UNPROCESSABLE_ENTITY,
 
             Self::RouteNotFound => StatusCode::NOT_FOUND,
             Self::InvalidRequest(_) => StatusCode::BAD_REQUEST,

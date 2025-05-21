@@ -24,6 +24,8 @@ pub struct Link {
     pub created_at: NaiveDateTime,
     /// Shortened link last modification time.
     pub updated_at: NaiveDateTime,
+    /// Shortened link (optional) expiration time
+    pub expires_at: Option<NaiveDateTime>,
 }
 
 impl Link {
@@ -37,6 +39,7 @@ impl Link {
             count_redirects: 0,
             created_at: now,
             updated_at: now,
+            expires_at: None,
         }
     }
 
@@ -77,8 +80,9 @@ impl Link {
 
 pub async fn create_link(
     db: &Pool<Postgres>,
-    link_id: Option<String>,
     link_target: String,
+    link_id: Option<String>,
+    expiration_time: Option<NaiveDateTime>,
 ) -> Result<Link> {
     // User provided invalid link ID
     if let Some(id) = link_id.as_ref()
@@ -87,17 +91,26 @@ pub async fn create_link(
         return Err(Error::LinkIdNotValid(id.clone()));
     };
 
+    // User provided invalid expiration time
+    if let Some(exp) = expiration_time.as_ref() {
+        let now = Utc::now().naive_utc();
+        if now >= *exp {
+            return Err(Error::LinkExpirationTimeNotValid(*exp));
+        }
+    }
+
     tokio::time::timeout(
         get_default_db_timeout(),
         sqlx::query_as!(
             Link,
             r#"
-                insert into links(id, target_url)
-                values ($1, $2)
+                insert into links(target_url, id, expires_at)
+                values ($1, $2, $3)
                 returning *
             "#,
-            link_id.clone().unwrap_or_else(Link::generate_id),
             link_target,
+            link_id.clone().unwrap_or_else(Link::generate_id),
+            expiration_time
         )
         .fetch_one(db),
     )
@@ -139,7 +152,11 @@ pub async fn get_link(db: &Pool<Postgres>, link_id: impl AsRef<str>) -> Result<O
 pub async fn get_links(db: &Pool<Postgres>) -> Result<Vec<Link>> {
     tokio::time::timeout(
         get_default_db_timeout(),
-        sqlx::query_as!(Link, r#"select * from links"#,).fetch_all(db),
+        sqlx::query_as!(
+            Link,
+            r#"select * from links where expires_at is null or expires_at > now()"#,
+        )
+        .fetch_all(db),
     )
     .await
     .inspect_err(|_| counter!("db.connection_timeout").increment(1))?
@@ -159,7 +176,7 @@ pub async fn increment_link_redirect_count(
             Link,
             r#"
                 update links set count_redirects = count_redirects + 1
-                where id = $1
+                where id = $1 and (expires_at is null or expires_at > now())
                 returning *
             "#,
             link_id.as_ref()

@@ -1,5 +1,6 @@
 use axum::{extract::State, http::StatusCode};
 use axum_extra::extract::Host;
+use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use url::Url;
 use utoipa::ToSchema;
@@ -15,6 +16,9 @@ pub struct CreateLinkRequest {
     ///
     /// This value will be randomly generated if omitted
     pub custom_id: Option<String>,
+    /// An optional expiration time for the new shortened link, given in the
+    /// form "yyyy-mm-ddTHH:MM:ss.SSS" (without a timezone).
+    pub custom_expires_at: Option<NaiveDateTime>,
 }
 
 #[utoipa::path(
@@ -77,7 +81,13 @@ pub async fn create_new_link(
     };
 
     // Create a new link
-    let new_link = create_link(&state.db, new_link.custom_id, url.to_string()).await?;
+    let new_link = create_link(
+        &state.db,
+        url.to_string(),
+        new_link.custom_id,
+        new_link.custom_expires_at,
+    )
+    .await?;
 
     tracing::debug!("Created new link with id {} targeting {}", new_link.id, url);
 
