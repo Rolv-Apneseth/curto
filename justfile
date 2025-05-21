@@ -35,7 +35,7 @@ develop:
 
 # Re-run quick development queries whenever any change is made
 develop-client:
-    cargo watch -q -c -w tests/ -w src/ -x "test -q quick_dev -- --ignored --nocapture"
+    bacon test -- "quick_dev" -- --ignored --no-capture
 
 # Add a new database migration
 database-add MIGRATION:
