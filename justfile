@@ -48,7 +48,7 @@ database-up:
 
 # Delete the database
 database-down:
-    sqlx database drop
+    sqlx database drop --force
 
 # Revert a database migration
 database-revert:
