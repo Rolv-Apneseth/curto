@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\n                update links set count_redirects = count_redirects + 1\n                where id = $1\n                returning *\n            ",
+  "query": "select * from links where expires_at is null or expires_at > now()",
   "describe": {
     "columns": [
       {
@@ -27,20 +27,24 @@
         "ordinal": 4,
         "name": "updated_at",
         "type_info": "Timestamp"
+      },
+      {
+        "ordinal": 5,
+        "name": "expires_at",
+        "type_info": "Timestamp"
       }
     ],
     "parameters": {
-      "Left": [
-        "Text"
-      ]
+      "Left": []
     },
     "nullable": [
       false,
       false,
       false,
       false,
-      false
+      false,
+      true
     ]
   },
-  "hash": "8d9d4d54f70d1f527e64bb300e97801be054b205af1f9ce1f7151e01aae9afbc"
+  "hash": "6f1a1a1c42a116cf6ed8c76776518a35e1bfd5ba861a47bd28ba2f35846d7c59"
 }
