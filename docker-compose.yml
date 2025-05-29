@@ -1,15 +1,16 @@
 services:
   db:
     image: postgres:16.0
-    restart: always
+    container_name: curto-db
+    restart: on-failure
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
       - "5432:5432"
     volumes:
-      - db:/var/lib/postgresql/data
-      - ./db/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - curto-db:/var/lib/postgresql/data
+
 volumes:
-  db:
+  curto-db:
     driver: local
