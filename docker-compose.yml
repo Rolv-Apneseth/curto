@@ -1,4 +1,19 @@
 services:
+  api:
+    image: rolvapneseth/curto
+    container_name: curto
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - APPLICATION_SHOULDRATELIMIT=true
+      - DATABASE_URL=postgresql://curto-db:5432/curto-db?user=postgres&password=postgres
+      - DATABASE_REQUIRESSL=false
+    ports:
+      - "7229:7229"
+    networks:
+      - curto-network
   db:
     image: postgres:16.0
     container_name: curto-db
@@ -6,11 +21,18 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=curto-db
     ports:
       - "5432:5432"
     volumes:
       - curto-db:/var/lib/postgresql/data
+    networks:
+      - curto-network
 
 volumes:
   curto-db:
     driver: local
+
+networks:
+  curto-network:
+    driver: bridge
