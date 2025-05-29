@@ -41,7 +41,7 @@ impl Default for AppConfig {
 pub struct DbConfig {
     /// The fully qualified URL used to connect to the PostgreSQL database.
     pub url: Url,
-    /// Whether to required SSL mode for the database.
+    /// Option to require SSL mode for the database.
     pub requiressl: bool,
 }
 
@@ -53,7 +53,6 @@ impl Config {
         let _ = dotenvy::dotenv();
 
         config::Config::builder()
-            // Will match env vars like this: `CURTO__APPLICATION_URL`
             .add_source(
                 config::Environment::with_prefix("")
                     .prefix_separator("")
