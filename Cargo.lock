@@ -3614,7 +3614,8 @@ checksum = "b6c140620e7ffbb22c2dee59cafe6084a59b5ffc27a8859a5f0d494b5d52b6be"
 [[package]]
 name = "utoipa"
 version = "5.3.1"
-source = "git+https://github.com/juhaku/utoipa.git?rev=cecda0531bf7d90800af66b186055932ee730526#cecda0531bf7d90800af66b186055932ee730526"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "435c6f69ef38c9017b4b4eea965dfb91e71e53d869e896db40d1cf2441dd75c0"
 dependencies = [
  "indexmap 2.9.0",
  "serde",
@@ -3625,7 +3626,8 @@ dependencies = [
 [[package]]
 name = "utoipa-axum"
 version = "0.2.0"
-source = "git+https://github.com/juhaku/utoipa.git?rev=cecda0531bf7d90800af66b186055932ee730526#cecda0531bf7d90800af66b186055932ee730526"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7c25bae5bccc842449ec0c5ddc5cbb6a3a1eaeac4503895dc105a1138f8234a0"
 dependencies = [
  "axum",
  "paste",
@@ -3637,7 +3639,8 @@ dependencies = [
 [[package]]
 name = "utoipa-gen"
 version = "5.3.1"
-source = "git+https://github.com/juhaku/utoipa.git?rev=cecda0531bf7d90800af66b186055932ee730526#cecda0531bf7d90800af66b186055932ee730526"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a77d306bc75294fd52f3e99b13ece67c02c1a2789190a6f31d32f736624326f7"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -3649,7 +3652,8 @@ dependencies = [
 [[package]]
 name = "utoipa-scalar"
 version = "0.3.0"
-source = "git+https://github.com/juhaku/utoipa.git?rev=cecda0531bf7d90800af66b186055932ee730526#cecda0531bf7d90800af66b186055932ee730526"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "59559e1509172f6b26c1cdbc7247c4ddd1ac6560fe94b584f81ee489b141f719"
 dependencies = [
  "axum",
  "serde",
@@ -3659,8 +3663,9 @@ dependencies = [
 
 [[package]]
 name = "utoipa-swagger-ui"
-version = "9.0.1"
-source = "git+https://github.com/juhaku/utoipa.git?rev=cecda0531bf7d90800af66b186055932ee730526#cecda0531bf7d90800af66b186055932ee730526"
+version = "9.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d047458f1b5b65237c2f6dc6db136945667f40a7668627b3490b9513a3d43a55"
 dependencies = [
  "axum",
  "base64 0.22.1",
