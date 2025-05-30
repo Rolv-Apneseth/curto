@@ -1,0 +1,45 @@
+name: Publish Docker Image
+
+on:
+    workflow_dispatch:
+
+    push:
+      branches:
+        - main
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Install stable Rust toolchain
+              run: rustup toolchain install nightly
+
+            - name: Build + test code
+              run: cargo build --verbose && cargo test --verbose
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+
+            - name: Login to Docker Hub
+              uses: docker/login-action@v3
+              with:
+                  username: ${{ secrets.DOCKERHUB_USERNAME }}
+                  password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+            - name: Build + push Docker image
+              uses: docker/bake-action@v5
+              with:
+                  push: true
+
+            - name: Push README to the Docker Hub description
+              uses: peter-evans/dockerhub-description@v4
+              with:
+                username: ${{ secrets.DOCKERHUB_USERNAME }}
+                password: ${{ secrets.DOCKERHUB_TOKEN }}
+                repository: rolvapneseth/curto
+                short-description: ${{ github.event.repository.description }}
+                enable-url-completion: true
+
