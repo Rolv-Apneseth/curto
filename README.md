@@ -1,7 +1,7 @@
 # curto
 
 [![Docker Image Size](https://img.shields.io/docker/image-size/rolvapneseth/curto?label=Docker%20image)](https://hub.docker.com/r/rolvapneseth/curto)
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Rolv-Apneseth/curto/prod.yml)](https://github.com/Rolv-Apneseth/world-wonders-api/actions/workflows/docker.yml)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Rolv-Apneseth/curto/docker.yml)](https://github.com/Rolv-Apneseth/world-wonders-api/actions/workflows/docker.yml)
 [![License](https://img.shields.io/badge/License-AGPLv3-green.svg)](./LICENSE)
 
 Open-source, self-hostable and fast URL-shortening API, written in Rust. Created mostly as a learning project.
